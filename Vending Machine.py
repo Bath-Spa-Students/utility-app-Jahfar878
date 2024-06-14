@@ -1,47 +1,52 @@
 class VendingMachine:
     def __init__(self):
-        self.products = {
-            'Coke': 1.50,
-            'Chips': 1.00,
-            'Water': 1.25,
-            'Chocolate Bar':2.15,
-            'Snickers':2.00,
-            'Potato Chips':1.75,
-            'Pretzels':2.75,
-            'Granola Bars':1.15,
-            'Fruit Juice':2.15,
-            'Gummy Bears':3.00,
-            'Trail Mix':1.45,
-            'Energy Drinks':3.00,
-            'Cookies':2.25,
-            'Mints':2.35,
-            'Sandwiches':3.15,
-            'Gum':2.50,
-            'Peanuts':3.00,
-            'Popcorn':1.25,
-            'Coffee':2.00,
-        }
+        self.products = [
+            {"name": 'Coke', "price": 1.50},
+            {"name": 'Chips', "price": 1.00},
+            {"name": 'Water', "price": 1.25},
+            {"name": 'Chocolate Bar', "price": 2.15},
+            {"name": 'Snickers', "price": 2.00},
+            {"name": 'Potato Chips', "price": 1.75},
+            {"name": 'Pretzels', "price": 2.75},
+            {"name": 'Granola Bars', "price": 1.15},
+            {"name": 'Fruit Juice', "price": 2.15},
+            {"name": 'Gummy Bears', "price": 3.00},
+            {"name": 'Trail Mix', "price": 1.45},
+            {"name": 'Energy Drinks', "price": 3.00},
+            {"name": 'Cookies', "price": 2.25},
+            {"name": 'Mints', "price": 2.35},
+            {"name": 'Sandwiches', "price": 3.15},
+            {"name": 'Gum', "price": 2.50},
+            {"name": 'Peanuts', "price": 3.00},
+            {"name": 'Popcorn', "price": 1.25},
+            {"name": 'Coffee', "price": 2.00}
+        ]
         self.balance = 0.0
 
     def display_products(self):
         print("Available products:")
-        for product, price in self.products.items():
-            print(f"{product}: ${price:.2f}")
+        for idx, product in enumerate(self.products, start=1):
+            print(f"{idx}: {product['name']} - ${product['price']:.2f}")
 
     def insert_money(self, amount):
         self.balance += amount
         print(f"Balance: ${self.balance:.2f}")
 
-    def select_product(self, product):
-        if product in self.products:
-            price = self.products[product]
-            if self.balance >= price:
-                self.balance -= price
-                print(f"Dispensing {product}. Remaining balance: ${self.balance:.2f}")
+    def select_product(self, product_number):
+        try:
+            product_number = int(product_number)
+            if 1 <= product_number <= len(self.products):
+                selected_product = self.products[product_number - 1]
+                price = selected_product['price']
+                if self.balance >= price:
+                    self.balance -= price
+                    print(f"Dispensing {selected_product['name']}. Remaining balance: ${self.balance:.2f}")
+                else:
+                    print("Insufficient funds. Please insert more money.")
             else:
-                print("Insufficient funds. Please insert more money.")
-        else:
-            print("Invalid product selection. Please choose a valid product.")
+                print("Invalid product number. Please choose a valid product.")
+        except ValueError:
+            print("Invalid input. Please enter a valid product number.")
 
 # Example Usage
 if __name__ == "__main__":
@@ -57,8 +62,8 @@ if __name__ == "__main__":
         vending_machine.insert_money(money_inserted)
 
         # User selects a product
-        selected_product = input("Enter the product you want to buy: ")
-        vending_machine.select_product(selected_product)
+        selected_product_number = input("Enter the product number you want to buy: ")
+        vending_machine.select_product(selected_product_number)
 
     print(f"Transaction ended. Remaining balance: ${vending_machine.balance:.2f}")
-    print(f"Thank You")
+    print("Thank You")
